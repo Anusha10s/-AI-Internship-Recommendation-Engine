@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - AI Internship Recommendation Engine</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📊 Visualization Dashboard</h1>
+            <p>Analytics and insights for internship recommendations</p>
+        </header>
+
+        <main>
+            <div class="select-section">
+                <label for="dashboardStudentSelect">👤 Select Student:</label>
+                <select id="dashboardStudentSelect">
+                    <option value="">-- Select a student --</option>
+                    {% for student in students %}
+                    <option value="{{ student }}">{{ student_names[student] }} ({{ student }})</option>
+                    {% endfor %}
+                </select>
+                <button onclick="loadDashboard()">📊 Load Dashboard</button>
+                <button onclick="window.location.href='/'" class="btn-real-time">🏠 Back</button>
+            </div>
+
+            <div id="dashboardContent" style="display: none;">
+                <div class="dashboard-grid">
+                    <div class="dashboard-card">
+                        <h3>📊 Recommendation Counts</h3>
+                        <div id="chartContainer"></div>
+                    </div>
+                    <div class="dashboard-card">
+                        <h3>📋 Recommendations Breakdown</h3>
+                        <div id="breakdownContainer"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="loading" style="display: none;">
+                <p>⏳ Loading dashboard...</p>
+            </div>
+        </main>
+
+        <footer>
+            <p>Task ID: AI-SS-002 | Student Code: DAS006438</p>
+        </footer>
+    </div>
+    <script>
+        function loadDashboard() {
+            const studentId = document.getElementById('dashboardStudentSelect').value;
+            if (!studentId) {
+                alert('Please select a student.');
+                return;
+            }
+            
+            document.getElementById('dashboardContent').style.display = 'none';
+            document.getElementById('loading').style.display = 'block';
+            
+            fetch(`/api/visualization/${studentId}`)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('loading').style.display = 'none';
+                    document.getElementById('dashboardContent').style.display = 'block';
+                    
+                    // Show chart
+                    const container = document.getElementById('chartContainer');
+                    const maxCount = Math.max(...data.counts);
+                    container.innerHTML = data.labels.map((label, i) => `
+                        <div class="chart-bar-container">
+                            <span class="chart-label">${label}</span>
+                            <div class="chart-bar-wrapper">
+                                <div class="chart-bar" style="width: ${(data.counts[i]/maxCount)*100}%; background: ${['#667EEA','#764BA2','#fdcb6e','#ff6b6b'][i]}">
+                                    ${data.counts[i]}
+                                </div>
+                            </div>
+                        </div>
+                    `).join('');
+                    
+                    // Show breakdown
+                    const breakdown = document.getElementById('breakdownContainer');
+                    breakdown.innerHTML = `
+                        <div class="breakdown-item"><strong>Collaborative:</strong> ${data.details.collaborative.map(r => r.title).join(', ') || 'None'}</div>
+                        <div class="breakdown-item"><strong>Content:</strong> ${data.details.content.map(r => r.title).join(', ') || 'None'}</div>
+                        <div class="breakdown-item"><strong>Hybrid:</strong> ${data.details.hybrid.map(r => r.title).join(', ') || 'None'}</div>
+                        <div class="breakdown-item"><strong>Deep Learning:</strong> ${data.details.deep.map(r => r.title).join(', ') || 'None'}</div>
+                    `;
+                })
+                .catch(error => {
+                    document.getElementById('loading').style.display = 'none';
+                    alert('Error loading dashboard. Please try again.');
+                    console.error(error);
+                });
+        }
+    </script>
+    <style>
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .dashboard-card {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 16px;
+            padding: 20px;
+        }
+        .dashboard-card h3 {
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 15px;
+        }
+        .chart-bar-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+        .chart-label {
+            color: rgba(255,255,255,0.6);
+            font-size: 13px;
+            width: 120px;
+            flex-shrink: 0;
+        }
+        .chart-bar-wrapper {
+            flex: 1;
+            background: rgba(255,255,255,0.05);
+            border-radius: 8px;
+            height: 30px;
+            overflow: hidden;
+            position: relative;
+        }
+        .chart-bar {
+            height: 100%;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 10px;
+            color: #fff;
+            font-weight: 600;
+            font-size: 13px;
+            transition: width 0.6s ease;
+        }
+        .breakdown-item {
+            color: rgba(255,255,255,0.7);
+            padding: 6px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+            font-size: 14px;
+        }
+        .breakdown-item strong {
+            color: rgba(255,255,255,0.9);
+        }
+        @media (max-width: 768px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            .chart-label {
+                width: 80px;
+                font-size: 11px;
+            }
+        }
+    </style>
+</body>
+</html>

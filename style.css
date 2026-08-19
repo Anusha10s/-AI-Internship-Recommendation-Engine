@@ -1,0 +1,140 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.container {
+    width: 100%;
+    max-width: 1000px;
+    max-height: 98vh;
+    overflow-y: auto;
+    background: rgba(255,255,255,0.05);
+    backdrop-filter: blur(20px);
+    border-radius: 24px;
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 30px;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+}
+
+header { text-align: center; margin-bottom: 25px; }
+header h1 { color: #fff; font-size: 28px; font-weight: 700; background: linear-gradient(135deg, #667EEA, #764BA2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+header p { color: rgba(255,255,255,0.5); font-size: 14px; margin-top: 4px; }
+
+.select-section {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+.select-section label { color: rgba(255,255,255,0.8); font-weight: 500; }
+.select-section select {
+    flex: 1;
+    padding: 12px 16px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    color: #fff;
+    font-size: 14px;
+    font-family: 'Inter', sans-serif;
+    outline: none;
+    min-width: 180px;
+}
+.select-section select option { background: #1a1a2e; color: #fff; }
+.select-section button {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 12px;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Inter', sans-serif;
+}
+.select-section button:not(.btn-real-time):not(.btn-dashboard) {
+    background: linear-gradient(135deg, #667EEA, #764BA2);
+}
+.select-section button:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(102,126,234,0.4); }
+.btn-real-time { background: linear-gradient(135deg, #00b894, #00cec9); }
+.btn-real-time:hover { box-shadow: 0 8px 24px rgba(0,206,201,0.4); }
+.btn-dashboard { background: linear-gradient(135deg, #fdcb6e, #f39c12); }
+.btn-dashboard:hover { box-shadow: 0 8px 24px rgba(253,203,110,0.4); }
+
+.realtime-status {
+    background: rgba(0,206,201,0.1);
+    border: 1px solid rgba(0,206,201,0.3);
+    border-radius: 12px;
+    padding: 12px 20px;
+    margin-bottom: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.realtime-status p { color: #00cec9; font-weight: 500; }
+.btn-stop { background: #ff6b6b; border: none; padding: 6px 16px; border-radius: 8px; color: #fff; cursor: pointer; font-weight: 600; }
+
+.student-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+.student-card h3 { color: rgba(255,255,255,0.8); margin-bottom: 12px; }
+.student-card p { color: rgba(255,255,255,0.6); margin: 5px 0; }
+.student-card span { color: #fff; }
+
+.recommendation-section {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 16px;
+    padding: 16px 20px;
+    margin-bottom: 16px;
+}
+.recommendation-section h3 { color: rgba(255,255,255,0.8); font-size: 15px; margin-bottom: 12px; }
+.recommendation-section.hybrid { border-color: rgba(102,126,234,0.3); background: rgba(102,126,234,0.05); }
+.recommendation-section.deep-learning { border-color: rgba(255,107,107,0.3); background: rgba(255,107,107,0.05); }
+.recommendation-section.deep-learning h3 { color: #ff6b6b; }
+
+.rec-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 14px;
+    background: rgba(255,255,255,0.04);
+    border-radius: 10px;
+    margin-bottom: 6px;
+}
+.rec-item .title { color: #fff; font-weight: 500; font-size: 14px; }
+.rec-item .company { color: rgba(255,255,255,0.4); font-size: 12px; }
+.rec-item .score { font-weight: 600; font-size: 14px; color: #667EEA; }
+.deep-learning .rec-item .score { color: #ff6b6b; }
+
+#loading p { color: rgba(255,255,255,0.6); text-align: center; padding: 20px; }
+
+footer {
+    text-align: center;
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    color: rgba(255,255,255,0.15);
+    font-size: 11px;
+}
+footer p:last-child { color: rgba(255,255,255,0.08); margin-top: 4px; font-size: 10px; }
+
+@media (max-width: 768px) {
+    .container { padding: 16px; }
+    header h1 { font-size: 22px; }
+    .select-section { flex-direction: column; }
+    .select-section select { width: 100%; }
+    .select-section button { width: 100%; }
+    .rec-item { flex-direction: column; align-items: flex-start; gap: 8px; }
+}

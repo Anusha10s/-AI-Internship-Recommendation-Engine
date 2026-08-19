@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Internship Recommendation Engine</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎯 AI Internship Recommendation Engine</h1>
+            <p>Find your perfect internship match</p>
+        </header>
+
+        <main>
+            <!-- Student Selection -->
+            <div class="select-section">
+                <label for="studentSelect">👤 Select Student:</label>
+                <select id="studentSelect">
+                    <option value="">-- Select a student --</option>
+                    {% for student in students %}
+                    <option value="{{ student }}">{{ student_names[student] }} ({{ student }})</option>
+                    {% endfor %}
+                </select>
+                <button onclick="getRecommendations()">🚀 Get Recommendations</button>
+                <button onclick="startRealTime()" class="btn-real-time">⚡ Real-time</button>
+                <button onclick="window.location.href='/dashboard'" class="btn-dashboard">📊 Dashboard</button>
+            </div>
+
+            <!-- Student Profile -->
+            <div id="studentInfo" style="display: none;">
+                <div class="student-card">
+                    <h3>📋 Student Profile</h3>
+                    <p><strong>Name:</strong> <span id="studentName"></span></p>
+                    <p><strong>Domain:</strong> <span id="studentDomain"></span></p>
+                    <p><strong>Skills:</strong> <span id="studentSkills"></span></p>
+                </div>
+            </div>
+
+            <!-- Real-time Status -->
+            <div id="realtimeStatus" style="display: none;" class="realtime-status">
+                <p>⚡ Real-time updates active</p>
+            </div>
+
+            <!-- Recommendations -->
+            <div id="recommendations" style="display: none;">
+                <!-- Collaborative Filtering -->
+                <div class="recommendation-section">
+                    <h3>📊 Collaborative Filtering</h3>
+                    <div id="collaborativeRecs"></div>
+                </div>
+
+                <!-- Content-Based Filtering -->
+                <div class="recommendation-section">
+                    <h3>📊 Content-Based Filtering</h3>
+                    <div id="contentRecs"></div>
+                </div>
+
+                <!-- Hybrid Recommendation -->
+                <div class="recommendation-section hybrid">
+                    <h3>📊 Hybrid Recommendation</h3>
+                    <div id="hybridRecs"></div>
+                </div>
+
+                <!-- Deep Learning Recommendation -->
+                <div class="recommendation-section deep-learning">
+                    <h3>🧠 Deep Learning Recommendation</h3>
+                    <div id="deepLearningRecs"></div>
+                </div>
+            </div>
+
+            <!-- Feedback Section -->
+            <div id="feedbackSection" style="display: none;" class="feedback-section">
+                <h3>💬 Provide Feedback</h3>
+                <div class="feedback-form">
+                    <select id="feedbackInternship">
+                        <option value="">Select Internship</option>
+                    </select>
+                    <select id="feedbackRating">
+                        <option value="5">⭐ Excellent</option>
+                        <option value="4">⭐ Good</option>
+                        <option value="3">⭐ Average</option>
+                        <option value="2">⭐ Poor</option>
+                        <option value="1">⭐ Terrible</option>
+                    </select>
+                    <input type="text" id="feedbackComment" placeholder="Your comment..." />
+                    <button onclick="submitFeedback()">📤 Submit Feedback</button>
+                </div>
+            </div>
+
+            <!-- Loading -->
+            <div id="loading" style="display: none;">
+                <p>⏳ Loading recommendations...</p>
+            </div>
+        </main>
+
+        <footer>
+            <p>Task ID: AI-SS-002 | Student Code: DAS006438</p>
+            <p>Features: 4 Methods • A/B Testing • Feedback • Visualization • Real-time • API</p>
+        </footer>
+    </div>
+
+    <script src="/static/script.js"></script>
+</body>
+</html>
